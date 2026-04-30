@@ -1,0 +1,23 @@
+[Unit]
+Description=Phosh First Boot Import
+
+# Run early
+Before=default.target graphical-session-pre.target
+
+# Run before any systemd activated consumers.
+Before=gnome-keyring-daemon.service
+Before=user-session-migration.service
+
+ConditionPathExists=!%E/phosh-first-boot-done
+
+# Never run in greetd
+ConditionUser=!@system
+ConditionEnvironment=XDG_SESSION_TYPE=wayland
+
+[Service]
+Type=oneshot
+ExecStart=@libexecdir@/phosh-first-boot-importer --verbose
+Restart=no
+
+[Install]
+WantedBy=graphical-session.target

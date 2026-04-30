@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/mobi/phosh/FirstBoot/">
+    <file compressed="true" preprocess="xml-stripblanks">page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">window.ui</file>
+  </gresource>
+  <gresource prefix="/mobi/phosh/FirstBoot/pages/">
+    <file compressed="true" preprocess="xml-stripblanks">done_page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">lang_page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">user_page.ui</file>
+  </gresource>
+  <gresource prefix="/mobi/phosh/FirstBoot/icons/scalable/status/">
+    <file alias="phone-setup-symbolic.svg">icons/phone-setup-symbolic.svg</file>
+    <file alias="right-large-symbolic.svg">icons/right-large-symbolic.svg</file>
+    <file alias="right-small-symbolic.svg">icons/right-small-symbolic.svg</file>
+    <file alias="setup-finished-symbolic.svg">icons/setup-finished-symbolic.svg</file>
+  </gresource>
+</gresources>

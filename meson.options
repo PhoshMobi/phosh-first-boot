@@ -1,0 +1,19 @@
+option('systemd_user_unit_dir',
+       type: 'string', value: '',
+       description: 'Directory for systemd user units')
+
+option('tmpfiles_dir',
+       type: 'string', value: '',
+       description: 'Directory for systemd tmpfiles')
+
+option('setup-user',
+       type: 'string', value: '_greetd',
+       description: 'First boot output dir user')
+
+option('output-dir',
+       type: 'string', value: '/run/phosh-first-boot',
+       description: 'First boot output dir')
+
+option('output-dir-group',
+       type: 'string', value: '_greetd',
+       description: 'First boot output dir group')

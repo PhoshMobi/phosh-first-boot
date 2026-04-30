@@ -1,0 +1,5 @@
+phosh-first-boot (0.0.0) UNRELEASED; urgency=medium
+
+  * Initial packaging
+
+ -- Guido Günther <agx@sigxcpu.org>  Wed, 18 Feb 2026 13:23:18 +0100

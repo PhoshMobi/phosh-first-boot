@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="PfbLangPage" parent="PfbPage">
+    <property name="title" translatable="yes">Language</property>
+    <property name="tag">lang</property>
+    <property name="content">
+
+      <object class="AdwPreferencesPage">
+        <property name="description-centered">1</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <property name="banner">
+          <object class="AdwBanner" id="error_banner"/>
+        </property>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Language</property>
+            <child>
+              <object class="AdwActionRow" id="lang_row">
+                <property name="title" translatable="yes">_Language</property>
+                <property name="use-underline">true</property>
+                <property name="activatable-widget">lang_button</property>
+                <child>
+                  <object class="GtkButton" id="lang_button">
+                    <property name="icon-name">right-large-symbolic</property>
+                    <signal name="clicked" handler="on_lang_button_clicked" object="PfbLangPage" swapped="yes"/>
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                  </object>
+                </child>
+                <style>
+                  <class name="property"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="MsOskLayoutPrefs" id="osk_layout_prefs">
+            <property name="visible">1</property>
+          </object>
+        </child>
+      </object>
+
+    </property>
+  </template>
+</interface>

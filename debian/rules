@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+include /usr/share/dpkg/default.mk
+INSTALL_DIR=$(CURDIR)/debian/tmp
+
+%:
+	dh $@ --without single-binary --buildsystem=meson
+
+execute_after_dh_auto_build:
+	HOME=$(CURDIR)/debian/build cargo build
+
+override_dh_auto_install:
+	dh_auto_install --destdir=debian/tmp
+	install -D -m0755 target/$(DEB_HOST_RUST_TYPE)/debug/phosh-first-boot \
+		$(INSTALL_DIR)/usr/bin/phosh-first-boot
+	install -D -m0755 target/$(DEB_HOST_RUST_TYPE)/debug/phosh-first-boot-importer \
+		$(INSTALL_DIR)/usr/libexec/phosh-first-boot-importer
+
+execute_after_dh_auto_clean:
+	rm -rf $(CURDIR)/debian/build

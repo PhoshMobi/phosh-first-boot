@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="PfbUserPage" parent="PfbPage">
+    <property name="title" translatable="yes">User Setup</property>
+    <property name="tag">user</property>
+    <property name="content">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <child>
+          <object class="AdwPreferencesPage">
+            <property name="description-centered">1</property>
+            <property name="banner">
+              <object class="AdwBanner" id="error_banner"/>
+            </property>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="title">Your First and Last Name:</property>
+                <child>
+                  <object class="AdwEntryRow" id="full_name_entry_row">
+                    <property name="title" translatable="yes">Full Name</property>
+                    <signal name="notify::text" handler="on_full_name_row_text_changed" swapped="true"/>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="title">The Username:</property>
+                <child>
+                  <object class="AdwEntryRow" id="user_name_entry_row">
+                    <property name="title" translatable="yes">Username</property>
+                    <signal name="notify::text" handler="on_user_name_entry_row_text_changed" swapped="true"/>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="title">The PIN to unlock your device:</property>
+                <child>
+                  <object class="AdwPasswordEntryRow" id="pass_entry_row">
+                    <property name="input-purpose">number</property>
+                    <property name="title" translatable="yes">PIN</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwPasswordEntryRow" id="repeat_pass_entry_row">
+                    <property name="input-purpose">number</property>
+                    <property name="title" translatable="yes">Repeat PIN</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="child">
+              <object class="GtkCenterBox">
+                <child type="start">
+                  <object class="AdwSpinner" id="active_spinner">
+                    <property name="visible" bind-source="PfbUserPage" bind-property="active" bind-flags="sync-create"/>
+                    <property name="hexpand">1</property>
+                    <property name="halign">end</property>
+                    <property name="margin-end">12</property>
+                  </object>
+                </child>
+                <child type="center">
+                  <object class="GtkLabel">
+                    <!-- Translators: Creates the user record -->
+                    <property name="label" translatable="yes">Create User</property>
+                  </object>
+                </child>
+              </object>
+            </property>
+            <binding name="sensitive">
+              <closure type="gboolean" function="state_to_ready">
+                <lookup name="text">user_name_entry_row</lookup>
+                <lookup name="text">pass_entry_row</lookup>
+                <lookup name="text">repeat_pass_entry_row</lookup>
+                <lookup name="active">PfbUserPage</lookup>
+              </closure>
+            </binding>
+            <signal name="clicked" handler="on_create_clicked" swapped="true"/>
+            <style>
+              <class name="suggested-action"/>
+              <class name="pill"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

@@ -1,0 +1,38 @@
+[package]
+name = "phosh-first-boot"
+version = "0.0.0"
+edition = "2021"
+default-run = "phosh-first-boot"
+
+[[bin]]
+name = "phosh-first-boot"
+path = "src/main.rs"
+
+[[bin]]
+name = "phosh-first-boot-importer"
+path = "src/importer/main.rs"
+
+[lib]
+name = "shared"
+path = "src/lib.rs"
+
+[dependencies]
+# GLib/GObject deps are updates in lockstep to use e.g. same glib version
+adw = { version = "0.9", package = "libadwaita", features = ["v1_8"] }
+gettext-rs = "0.7.7"
+glib = { version = "0.21" }
+glib-macros = "0.21.5"
+gtk = { version = "0.11", package = "gtk4", features = ["v4_20"] }
+gtk-macros = "0.3"
+log = "0.4.29"
+pretty_env_logger = "0.5.0"
+zbus = { version = "5", default-features = false, features = ["async-io"] }
+zvariant = "5"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1"}
+libc = "0.2.182"
+clap = { version = "4.5.60", features = ["derive", "string"] }
+libpms = { git = "https://gitlab.gnome.org/World/Phosh/libpms-rs.git", branch = "main" }
+
+[build-dependencies]
+glib-build-tools = "0.21.0"

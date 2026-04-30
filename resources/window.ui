@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="PfbWindow" parent="AdwApplicationWindow">
+    <property name="width-request">360</property>
+    <property name="height-request">400</property>
+    <property name="default-height">700</property>
+    <property name="content">
+      <object class="AdwNavigationView">
+        <child>
+          <object class="PfbPage" id="start_page">
+            <property name="title" translatable="yes">Welcome</property>
+            <property name="can-go-next">1</property>
+            <property name="next-label" translatable="yes">Let's go</property>
+            <property name="next">lang</property>
+            <property name="content">
+              <object class="AdwStatusPage">
+                <property name="icon-name">phone-setup-symbolic</property>
+                <property name="title" translatable="yes">Welcome to Phosh</property>
+                <property name="description" translatable="yes">Let's setup your device</property>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="PfbLangPage" id="lang_page">
+            <property name="next">user</property>
+            <!-- TODO: Until we have libpms -->
+            <property name="can-go-next">1</property>
+          </object>
+        </child>
+        <child>
+          <object class="PfbUserPage" id="user_page">
+            <property name="next">all-done</property>
+          </object>
+        </child>
+        <child>
+          <object class="PfbDonePage" id="done_page"/>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

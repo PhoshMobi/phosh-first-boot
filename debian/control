@@ -1,0 +1,38 @@
+Source: phosh-first-boot
+Section: x11
+Priority: optional
+Maintainer: Phosh.mobi e.V. <team@phosh.mobi>
+Build-Depends:
+ debhelper-compat (= 13),
+ cargo,
+ desktop-file-utils,
+ libadwaita-1-dev,
+ libcrypt-dev,
+ libglib2.0-bin,
+ libgtk-4-dev,
+ libpms-dev,
+ libxml2-utils,
+ meson,
+ rustc,
+ systemd-dev,
+Standards-Version: 4.7.2
+Homepage: https://codeberg.org/agx/phosh-first-boot
+
+Package: phosh-first-boot
+Architecture: any
+Depends:
+ dconf-cli,
+ polkitd,
+ ${misc:Depends},
+ ${shlibs:Depends},
+Recommends:
+ phrog,
+ systemd,
+ systemd-homed,
+Description: Phosh First Boot Setup
+ The Phosh is daily usable, robust and easy to use graphical user environment for mobile devices
+ running mainline Linux. The name is a portmanteau of phone and shell as phosh was one of the first
+ components developed by the project.
+ .
+ This package contains the first boot assistant that helps the user to configure their systems after
+ booting the device for the first time.

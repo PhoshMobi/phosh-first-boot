@@ -1,0 +1,17 @@
+.flatpak-builder/
+repo/
+repo-aarch64/
+target/
+*.flatpak
+.flatpak
+# Packaging
+debian/build/
+debian/*.substvars
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/phosh-first-boot.debhelper.log
+debian/phosh-first-boot.postinst.debhelper
+debian/phosh-first-boot/
+debian/tmp/
+debian/tmp_home/

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="PfbPage" parent="AdwNavigationPage">
+    <property name="child">
+      <object class="AdwToolbarView">
+        <property name="content">
+          <object class="AdwClamp">
+            <property name="maximum-size">600</property>
+            <property name="child">
+              <object class="GtkScrolledWindow">
+                <property name="propagate-natural-height">1</property>
+                <property name="propagate-natural-width">1</property>
+                <property name="child" bind-source="PfbPage" bind-property="content" bind-flags="sync-create"/>
+              </object>
+            </property>
+          </object>
+        </property>
+        <child type="top">
+          <object class="AdwHeaderBar"/>
+        </child>
+        <child type="bottom">
+          <object class="GtkActionBar">
+            <property name="margin-bottom">6</property>
+            <property name="margin-end">6</property>
+            <child type="end">
+              <object class="GtkBox">
+                <property name="visible" bind-source="PfbPage" bind-property="can-go-next" bind-flags="sync-create"/>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" bind-source="PfbPage" bind-property="next-label" bind-flags="sync-create"/>
+                    <property name="action-name">navigation.push</property>
+                    <binding name="action-target">
+                      <closure type="GVariant" function="string_to_variant">
+                        <lookup name="next">PfbPage</lookup>
+                      </closure>
+                    </binding>
+                    <style>
+                      <class name="suggested-action"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

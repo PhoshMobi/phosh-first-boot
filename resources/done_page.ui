@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="PfbDonePage" parent="PfbPage">
+    <property name="title" translatable="yes">All set up!</property>
+    <property name="tag">all-done</property>
+    <property name="content">
+      <object class="AdwStatusPage">
+        <property name="icon-name">setup-finished-symbolic</property>
+        <property name="title" translatable="yes">The system is now ready to use!</property>
+        <property name="child">
+          <object class="GtkButton">
+            <property name="label" translatable="yes">Get started</property>
+            <signal name="clicked" handler="on_get_started_clicked" swapped="true"/>
+            <style>
+              <class name="suggested-action"/>
+              <class name="pill"/>
+            </style>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>
