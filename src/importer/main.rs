@@ -9,8 +9,6 @@ use std::fs::OpenOptions;
 use std::io;
 use std::path::PathBuf;
 
-use glib;
-
 use log::{info, warn};
 
 const DONE_FILE: &str = "phosh-first-boot-done";
