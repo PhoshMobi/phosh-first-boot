@@ -27,7 +27,11 @@ struct Cli {
 fn touch_done() -> io::Result<()> {
     let done = glib::user_config_dir().join(DONE_FILE);
 
-    OpenOptions::new().create(true).write(true).open(done)?;
+    OpenOptions::new()
+        .create(true)
+        .truncate(true)
+        .write(true)
+        .open(done)?;
     Ok(())
 }
 
