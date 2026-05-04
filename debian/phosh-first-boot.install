@@ -1,5 +1,6 @@
 /usr/lib/systemd/user/phosh-first-boot-importer.service
 /usr/lib/tmpfiles.d/phosh-first-boot.conf
+/usr/share/locale/*/LC_MESSAGES/PhoshFirstBoot.mo
 usr/bin/phosh-first-boot
 usr/libexec/phosh-first-boot-importer
 usr/share/applications/mobi.phosh.FirstBoot.desktop

@@ -16,3 +16,6 @@ debian/phosh-first-boot.postinst.debhelper
 debian/phosh-first-boot/
 debian/tmp/
 debian/tmp_home/
+po/*.mo
+po/*.pot
+po/missing
