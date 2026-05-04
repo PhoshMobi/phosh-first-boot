@@ -1,3 +1,5 @@
+subdir('icons')
+
 systemd_dep = dependency('systemd', required: false)
 
 systemd_user_unit_dir = get_option('systemd_user_unit_dir')
@@ -75,3 +77,25 @@ configure_file(
   configuration: tmpfile_d_data,
   install_dir: tmpfiles_dir,
 )
+
+desktop_file = f'@app_id@.desktop'
+desktop_file_data = configuration_data()
+desktop_file_data.set('LIBEXECDIR', libexecdir)
+desktop_file_data.set('APP_ID', app_id)
+merged = i18n.merge_file(
+  input: configure_file(
+    input: desktop_file + '.in.in',
+    output: desktop_file + '.in',
+    configuration: desktop_file_data,
+  ),
+  output: desktop_file,
+  po_dir: '../po',
+  install: true,
+  install_dir: datadir / 'applications',
+  type: 'desktop',
+)
+
+desktop_utils = find_program('desktop-file-validate', required: false)
+if desktop_utils.found()
+  test('Validate desktop file', desktop_utils, args: merged)
+endif
