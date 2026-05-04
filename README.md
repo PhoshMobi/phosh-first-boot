@@ -39,4 +39,4 @@ RUST_LOG=trace cargo run
 
 - Matrix: <https://matrix.to/#/#phosh:phosh.mobi>
 
-[debian/control]: https://gitlab.gnome.org/guidog/xdg-desktop-portal-phosh/-/blob/main/debian/control
+[debian/control]: https://gitlab.gnome.org/World/Phosh/phosh-first-boot/-/blob/main/debian/control
