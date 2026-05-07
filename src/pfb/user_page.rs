@@ -17,7 +17,7 @@ use zbus::{proxy, Connection};
 use log::{debug, trace, warn};
 
 const PIN_MIN_LEN: usize = 4;
-const USERNAME_MIN_LEN: usize = 5;
+const USERNAME_MIN_LEN: usize = 3;
 
 #[proxy(
     interface = "org.freedesktop.home1.Manager",
@@ -156,7 +156,7 @@ impl UserPage {
     }
 
     fn is_valid_username(&self, s: &str) -> bool {
-        s.len() > USERNAME_MIN_LEN && s.chars().all(|c| self.is_allowed_username_char(c))
+        s.len() >= USERNAME_MIN_LEN && s.chars().all(|c| self.is_allowed_username_char(c))
     }
 
     fn sanitize_username(&self, full_name: &str) -> String {
