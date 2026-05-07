@@ -1,0 +1,129 @@
+include:
+ - project: 'World/Phosh/meta-phosh'
+   ref: '4a59c2bce9fe230614431a21638a05f3a30da7f3'
+   file: '/ci/phosh-common-jobs.yml'
+ - project: 'Infrastructure/freedesktop-ci-templates'
+   ref: 'd03cddbcff35f26861429fc816c00323f48e99af'
+   file: '/templates/ci-fairy.yml'
+
+stages:
+ - build
+ - test+docs
+ - style-checks
+ - package
+
+default:
+  # Protect CI infra from rogue jobs
+  timeout: 15 minutes
+  # Allow jobs to be caneled on new commits
+  interruptible: true
+  # Retry on infra hickups automatically
+  retry:
+    max: 1
+    when:
+      - 'api_failure'
+      - 'runner_system_failure'
+      - 'scheduler_failure'
+      - 'stuck_or_timeout_failure'
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    # Don't trigger a branch pipeline if there is an open MR
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH
+
+variables:
+  # For ci-fairy
+  FDO_UPSTREAM_REPO: World/Phosh/phosh-first-boot
+  RUST_BACKTRACE: "full"
+  RUST_VERSION: stable
+  GIT_SUBMODULE_STRATEGY: recursive
+  DEBIAN_IMAGE: $CI_REGISTRY/world/phosh/pfs/debian:v0.0.2025-11-20.1
+  SID_PKGS: rustc rust-clippy rustfmt
+
+.common_before_script: &common_before_script
+  before_script:
+    - !reference [.phosh-prepare-apt]
+    - eatmydata apt build-dep -y --no-install-recommends .
+
+build:
+  stage: build
+  image: ${DEBIAN_IMAGE}
+  variables:
+    PHOSH_ADDITIONAL_SID_PKGS: $SID_PKGS
+  <<: *common_before_script
+  script:
+    - meson setup _build
+    - meson install -C _build
+    - meson test -C _build
+  artifacts:
+    paths:
+      - _build
+
+check-po:
+  stage: test+docs
+  extends: .phosh-check-po
+
+check-consistency:
+  stage: test+docs
+  extends: .phosh-check-consistency
+
+check-fmt:
+  stage: style-checks
+  needs: []
+  image: rust
+  interruptible: true
+  script:
+    - rustup component add rustfmt
+    - cargo fmt --check
+
+# Sanity checks of MR settings and commit logs
+check-commit-log:
+  extends:
+    - .fdo.ci-fairy
+  stage: style-checks
+  variables:
+    GIT_DEPTH: "100"
+  needs: []
+  script: |
+    ci-fairy check-commits --signed-off-by --junit-xml=commit-message-junit-report.xml
+  artifacts:
+    reports:
+      junit: commit-message-junit-report.xml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
+
+check-markdown:
+  stage: style-checks
+  variables:
+    PHOSH_MARKDOWN_PATHS: "*.md"
+  extends:
+    - .phosh-check-markdown
+
+check-meson:
+  stage: style-checks
+  extends:
+    - .phosh-check-meson
+
+check-clippy:
+  stage: style-checks
+  needs: [build]
+  image: ${DEBIAN_IMAGE}
+  variables:
+    PHOSH_ADDITIONAL_SID_PKGS: $SID_PKGS
+  <<: *common_before_script
+  script:
+    # TODO: add -- -Dclippy::pedantic
+    - CARGO_HOME=_build/cargo PFS_RESOURCE_DIR=$PWD/_build/src cargo clippy --no-deps -- -Dwarnings
+
+# Disable until we have newer libpms
+.package-deb-debian-forky:
+  stage: package
+  variables:
+    PHOSH_DOCKER_IMAGE: debian:forky
+    DEB_BUILD_PROFILES:
+    PHOSH_ADDITIONAL_SID_PKGS: $SID_PKGS
+  extends: .phosh-build-debian-package

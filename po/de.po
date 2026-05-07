@@ -1,0 +1,87 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PhoshFirstBoot package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PhoshFirstBoot\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 12:14+0200\n"
+"PO-Revision-Date:  2026-05-04 12:14+0200\n"
+"Last-Translator: Guido Günther <agx@sigxcpu.org>\n"
+"Language-Team: DE <LL@li.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: resources/done_page.ui:4
+msgid "All set up!"
+msgstr "Fertig!"
+
+#: resources/done_page.ui:9
+msgid "The system is now ready to use!"
+msgstr "Das System kann nun benutzt werden!"
+
+#: resources/done_page.ui:12
+msgid "Get started"
+msgstr "Los gehts"
+
+#: resources/lang_page.ui:4
+msgid "Language"
+msgstr "Sprache"
+
+#: resources/lang_page.ui:20
+msgid "_Language"
+msgstr "_Sprache"
+
+#: resources/user_page.ui:4
+msgid "User Setup"
+msgstr "Benutzer Einstellungen"
+
+#: resources/user_page.ui:22
+msgid "Full Name"
+msgstr "Vor- und Nachname"
+
+#: resources/user_page.ui:33
+msgid "Username"
+msgstr "Benutzername"
+
+#: resources/user_page.ui:45
+msgid "PIN"
+msgstr "PIN"
+
+#: resources/user_page.ui:51
+msgid "Repeat PIN"
+msgstr "PIN wiederholen"
+
+#. Translators: Creates the user record
+#: resources/user_page.ui:73
+msgid "Create User"
+msgstr "Benutzer anlegen"
+
+#: resources/window.ui:11
+msgid "Welcome"
+msgstr "Willkommen"
+
+#: resources/window.ui:13
+msgid "Let's go"
+msgstr "Los gets"
+
+#: resources/window.ui:18
+msgid "Welcome to Phosh"
+msgstr "Willkommen zu Phosh"
+
+#: resources/window.ui:19
+msgid "Let's setup your device"
+msgstr "Lass uns dein Gerät einrichten"
+
+#: src/pfb/lang_page.rs:106
+msgid "Keyboard Layout"
+msgstr "Tastaturbelegung"
+
+#. Translators: The label on the button to go to the next page
+#: src/pfb/page.rs:84
+msgid "Next"
+msgstr "Weiter"

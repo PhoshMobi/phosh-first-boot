@@ -7,6 +7,7 @@ target/
 # Packaging
 debian/build/
 debian/*.substvars
+debian/*.debhelper
 debian/.debhelper/
 debian/debhelper-build-stamp
 debian/files
@@ -15,3 +16,6 @@ debian/phosh-first-boot.postinst.debhelper
 debian/phosh-first-boot/
 debian/tmp/
 debian/tmp_home/
+po/*.mo
+po/*.pot
+po/missing

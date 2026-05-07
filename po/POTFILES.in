@@ -1,0 +1,6 @@
+resources/done_page.ui
+resources/lang_page.ui
+resources/user_page.ui
+resources/window.ui
+src/pfb/lang_page.rs
+src/pfb/page.rs

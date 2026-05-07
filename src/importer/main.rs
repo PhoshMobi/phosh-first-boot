@@ -9,8 +9,6 @@ use std::fs::OpenOptions;
 use std::io;
 use std::path::PathBuf;
 
-use glib;
-
 use log::{info, warn};
 
 const DONE_FILE: &str = "phosh-first-boot-done";
@@ -29,7 +27,11 @@ struct Cli {
 fn touch_done() -> io::Result<()> {
     let done = glib::user_config_dir().join(DONE_FILE);
 
-    OpenOptions::new().create(true).write(true).open(done)?;
+    OpenOptions::new()
+        .create(true)
+        .truncate(true)
+        .write(true)
+        .open(done)?;
     Ok(())
 }
 
