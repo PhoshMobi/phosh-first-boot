@@ -1,9 +1,10 @@
-/usr/lib/systemd/user/phosh-first-boot-importer.service
-/usr/lib/tmpfiles.d/phosh-first-boot.conf
-/usr/share/locale/*/LC_MESSAGES/PhoshFirstBoot.mo
 usr/bin/phosh-first-boot
+usr/lib/systemd/user/phosh-first-boot-importer.service
+usr/lib/tmpfiles.d/phosh-first-boot.conf
 usr/libexec/phosh-first-boot-importer
 usr/share/applications/mobi.phosh.FirstBoot.desktop
 usr/share/glib-2.0/schemas/00_mobi.phosh.FirstBoot.gschema.override
 usr/share/glib-2.0/schemas/mobi.phosh.FirstBoot.gschema.xml
+usr/share/icons/hicolor/symbolic/apps/mobi.phosh.FirstBoot-symbolic.svg
+usr/share/locale/*/LC_MESSAGES/PhoshFirstBoot.mo
 usr/share/polkit-1/rules.d/20-phosh-first-boot.rules
