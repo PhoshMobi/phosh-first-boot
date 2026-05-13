@@ -1,5 +1,5 @@
-phosh-first-boot (0.0.0) UNRELEASED; urgency=medium
+phosh-first-boot (0.0.1) unstable; urgency=medium
 
-  * Initial packaging
+  * Initial release
 
- -- Guido Günther <agx@sigxcpu.org>  Wed, 18 Feb 2026 13:23:18 +0100
+ -- Guido Günther <agx@sigxcpu.org>  Wed, 13 May 2026 08:52:50 +0200
