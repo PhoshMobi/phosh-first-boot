@@ -59,6 +59,7 @@ build:
     - meson setup _build
     - meson install -C _build
     - meson test -C _build
+    - cargo build
   artifacts:
     paths:
       - _build
