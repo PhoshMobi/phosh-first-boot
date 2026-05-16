@@ -1,0 +1,80 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PhoshFirstBoot package.
+# nicole mikołajczyk <git@mkljczk.pl>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 13:19+0200\n"
+"PO-Revision-Date: 2026-05-16 10:51+0200\n"
+"Last-Translator: nicole mikołajczyk <git@mkljczk.pl>\n"
+"Language-Team: \n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: resources/done_page.ui:4
+msgid "All set up!"
+msgstr "Wszystko gotowe!"
+
+#: resources/done_page.ui:9
+msgid "The system is now ready to use!"
+msgstr "Możesz teraz korzystać z systemu!"
+
+#: resources/done_page.ui:12
+msgid "Get started"
+msgstr "Rozpocznij"
+
+#: resources/lang_page.ui:4
+msgid "Language"
+msgstr "Język"
+
+#: resources/lang_page.ui:20
+msgid "_Language"
+msgstr "_Język"
+
+#: resources/user_page.ui:4
+msgid "User Setup"
+msgstr "Konfiguracja użytkownika"
+
+#: resources/user_page.ui:22
+msgid "Full Name"
+msgstr "Imię i nazwisko"
+
+#: resources/user_page.ui:33
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: resources/user_page.ui:45
+msgid "PIN"
+msgstr "PIN"
+
+#: resources/user_page.ui:51
+msgid "Repeat PIN"
+msgstr "Powtórz PIN"
+
+#. Translators: Creates the user record
+#: resources/user_page.ui:73
+msgid "Create User"
+msgstr "Utwórz użytkownika"
+
+#: resources/window.ui:11
+msgid "Welcome"
+msgstr "Witamy"
+
+#: resources/window.ui:13
+msgid "Let's go"
+msgstr "Rozpocznij"
+
+#: resources/window.ui:18
+msgid "Welcome to Phosh"
+msgstr "Witaj w Phosh"
+
+#: resources/window.ui:19
+msgid "Let's setup your device"
+msgstr "Skonfigurujmy Twoje urządzenie"
