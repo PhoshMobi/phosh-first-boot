@@ -99,3 +99,9 @@ desktop_utils = find_program('desktop-file-validate', required: false)
 if desktop_utils.found()
   test('Validate desktop file', desktop_utils, args: merged)
 endif
+
+install_data(
+  'defaults.conf',
+  install_dir: defaultsdir,
+)
+
