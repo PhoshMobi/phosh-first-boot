@@ -32,8 +32,8 @@ serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1"}
 libc = "0.2.182"
 clap = { version = "4.5.60", features = ["derive", "string"] }
-#libpms = { git = "https://gitlab.gnome.org/World/Phosh/libpms-rs.git", branch = "main" }
-libpms = "0.0.2"
+libpms = { git = "https://gitlab.gnome.org/World/Phosh/libpms-rs.git", branch = "main" }
+#libpms = "0.0.2"
 
 [build-dependencies]
 glib-build-tools = "0.21.0"
