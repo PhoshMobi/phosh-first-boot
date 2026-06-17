@@ -156,6 +156,8 @@ impl LangPage {
     }
 
     fn update_lang(&self, region: String) {
+        self.imp().osk_layout_prefs.add_for_locale(&region, None);
+
         MainContext::default().spawn_local(glib::clone!(
             #[weak(rename_to = this)]
             self,
