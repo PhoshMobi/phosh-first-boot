@@ -1,6 +1,6 @@
 [package]
 name = "phosh-first-boot"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2021"
 default-run = "phosh-first-boot"
 
@@ -32,8 +32,8 @@ serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1"}
 libc = "0.2.182"
 clap = { version = "4.5.60", features = ["derive", "string"] }
-libpms = { git = "https://gitlab.gnome.org/World/Phosh/libpms-rs.git", branch = "main" }
-#libpms = "0.0.2"
+#libpms = { git = "https://gitlab.gnome.org/World/Phosh/libpms-rs.git", branch = "main" }
+libpms = "0.0.3"
 
 [build-dependencies]
 glib-build-tools = "0.21.0"

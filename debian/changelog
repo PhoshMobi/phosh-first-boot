@@ -1,3 +1,18 @@
+phosh-first-boot (0.1.0) unstable; urgency=medium
+
+  [ nicole mikołajczyk ]
+  * po: Add Polish translation
+
+  [ Guido Günther ]
+  * cargo: Make it simple to build against libpms-rs main
+  * build: Use current libpms git
+  * build: Update dependencies
+  * lang-page: Auto-select OSK layout based on chosen locale
+  * build: Use libpms 0.0.3
+  * treewide: Release 0.1.0
+
+ -- Guido Günther <agx@sigxcpu.org>  Sun, 28 Jun 2026 11:20:00 +0200
+
 phosh-first-boot (0.0.1) unstable; urgency=medium
 
   * Initial release
