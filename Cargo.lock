@@ -1016,8 +1016,9 @@ checksum = "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66"
 
 [[package]]
 name = "libpms"
-version = "0.0.2"
-source = "git+https://gitlab.gnome.org/World/Phosh/libpms-rs.git?branch=main#d54a82c77db8d2fe03bbcd58148cfadf11ca32d4"
+version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a570380f96cd7c9baee9322e53290622c951af3aafe17140eedc84c00b7f63a3"
 dependencies = [
  "gio 0.22.6",
  "glib 0.22.7",
@@ -1030,8 +1031,9 @@ dependencies = [
 
 [[package]]
 name = "libpms-sys"
-version = "0.0.2"
-source = "git+https://gitlab.gnome.org/World/Phosh/libpms-rs.git?branch=main#d54a82c77db8d2fe03bbcd58148cfadf11ca32d4"
+version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c6e062012fbf9eb5dff79132a570763fce80f4d8bd7551b2ee07d319d3798b48"
 dependencies = [
  "gio-sys 0.22.0",
  "glib-sys 0.22.6",
