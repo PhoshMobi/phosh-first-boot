@@ -1,3 +1,13 @@
+phosh-first-boot 0.1.0
+----------------------
+Released June 2026
+* Automatically select OSK layout by locale
+* Use libpms-rs 0.0.3
+* Contributors:
+    * Guido Günther
+* UI translations:
+    * nicole mikołajczyk (pl)
+
 phosh-first-boot 0.0.1
 ----------------------
 Released May 2026

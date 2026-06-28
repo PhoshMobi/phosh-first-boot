@@ -1,7 +1,7 @@
 project(
   'PhoshFirstBoot',
   'Rust',
-  version: '0.0.1',
+  version: '0.1.0',
   meson_version: '>= 1.1',
 )
 
