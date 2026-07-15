@@ -8,7 +8,7 @@ project(
 app_id = 'mobi.phosh.FirstBoot'
 
 prefix = get_option('prefix')
-datadir = get_option('datadir')
+datadir = prefix / get_option('datadir')
 bindir = prefix / get_option('bindir')
 libdir = prefix / get_option('libdir')
 libexecdir = prefix / get_option('libexecdir')
