@@ -1,7 +1,9 @@
+# Overrides the systemd_user_unit_dir pkgconf variable, hence '_'
 option('systemd_user_unit_dir',
        type: 'string', value: '',
        description: 'Directory for systemd user units')
 
+# Overrides the tempfiles_dir pkgconf variable, hence '_'
 option('tmpfiles_dir',
        type: 'string', value: '',
        description: 'Directory for systemd tmpfiles')
