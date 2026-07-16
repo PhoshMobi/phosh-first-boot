@@ -8,12 +8,13 @@ project(
 app_id = 'mobi.phosh.FirstBoot'
 
 prefix = get_option('prefix')
-datadir = get_option('datadir')
+datadir = prefix / get_option('datadir')
 bindir = prefix / get_option('bindir')
 libdir = prefix / get_option('libdir')
 libexecdir = prefix / get_option('libexecdir')
 schemasdir = datadir / 'glib-2.0' / 'schemas'
 polkitdir = datadir / 'polkit-1' / 'rules.d'
+defaultsdir = datadir / 'phosh-first-boot'
 
 i18n = import('i18n')
 gnome = import('gnome')

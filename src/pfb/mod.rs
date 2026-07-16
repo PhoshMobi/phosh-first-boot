@@ -4,6 +4,7 @@
 pub mod application;
 pub mod config;
 pub mod crypt;
+pub mod defaults;
 pub mod page;
 pub mod window;
 

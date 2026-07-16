@@ -3,7 +3,7 @@
 
 use glib::Object;
 
-use crate::pfb::{crypt, Page, PageImpl};
+use crate::pfb::{application, crypt, Page, PageImpl};
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use glib::MainContext;
@@ -56,6 +56,7 @@ struct UserRecord {
     last_password_change_u_sec: u128,
     secret: SecretSection,
     privileged: PrivilegedSection,
+    member_of: Vec<String>,
 }
 
 mod imp {
@@ -271,6 +272,7 @@ impl UserPage {
         user_name: String,
         real_name: String,
         password: String,
+        aux_groups: Vec<String>,
     ) -> Result<(), Box<dyn std::error::Error>> {
         // Example record from homectl:
         // {
@@ -303,6 +305,7 @@ impl UserPage {
             enforce_password_policy: false,
             last_change_u_sec: now,
             last_password_change_u_sec: now,
+            member_of: aux_groups,
             secret: SecretSection {
                 password: vec![password],
             },
@@ -327,7 +330,16 @@ impl UserPage {
         let fullname = imp.full_name_entry_row.text().to_string();
         let pin = imp.pass_entry_row.text().to_string();
 
-        debug!("Creating user {}", username);
+        // Get defaults from config
+        let app = application::app_get_default();
+        let defaults = app.defaults();
+        let aux_groups = defaults.user.aux_groups.clone();
+
+        debug!(
+            "Creating user {}, groups: {}",
+            username,
+            aux_groups.join(", ")
+        );
 
         imp.error_banner.set_revealed(false);
         self.set_active(true);
@@ -336,7 +348,7 @@ impl UserPage {
             self,
             async move {
                 match this
-                    .create_homed_user(username.clone(), fullname, pin)
+                    .create_homed_user(username.clone(), fullname, pin, aux_groups)
                     .await
                 {
                     Ok(_) => {

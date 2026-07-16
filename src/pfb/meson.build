@@ -1,6 +1,7 @@
 conf = configuration_data()
 conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
 conf.set_quoted('APP_ID', app_id)
+conf.set_quoted('DEFAULTSDIR', defaultsdir)
 conf.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
 conf.set_quoted('OUTPUTDIR', get_option('output-dir'))
 
