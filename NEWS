@@ -1,3 +1,13 @@
+phosh-first-boot 0.1.1
+----------------------
+Released August 2026
+* user panel: Allow to add auxiliary groups. This can be configured
+  by the distribution.
+* Issues fixed:
+    * https://gitlab.gnome.org/World/Phosh/phosh-first-boot/-/work_items/5
+* Contributors:
+    * Guido Günther
+
 phosh-first-boot 0.1.0
 ----------------------
 Released June 2026
