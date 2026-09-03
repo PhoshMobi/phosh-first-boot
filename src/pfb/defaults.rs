@@ -14,6 +14,20 @@ pub struct Defaults {
 pub struct UserDefaults {
     // Auxiliary groups we add the user to
     pub aux_groups: Vec<String>,
+    // Minimum username length
+    #[serde(default = "default_username_min_len")]
+    pub username_min_len: usize,
+    // Minimum pin/password length
+    #[serde(default = "default_pin_min_len")]
+    pub pin_min_len: usize,
+}
+
+const fn default_username_min_len() -> usize {
+    2
+}
+
+const fn default_pin_min_len() -> usize {
+    4
 }
 
 impl Defaults {
