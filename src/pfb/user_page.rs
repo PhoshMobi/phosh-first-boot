@@ -3,7 +3,7 @@
 
 use glib::Object;
 
-use crate::pfb::{application, crypt, Page, PageImpl};
+use crate::pfb::{application, crypt, defaults::Storage, Page, PageImpl};
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use glib::MainContext;
@@ -88,6 +88,7 @@ mod imp {
         pub auto_user_name: Cell<bool>,
         pub username_min_len: Cell<usize>,
         pub pin_min_len: Cell<usize>,
+        pub storage: Cell<Storage>,
 
         pub(super) connection: RefCell<Option<Connection>>,
         pub(super) home1: RefCell<Option<HomeManagerProxy<'static>>>,
@@ -145,6 +146,14 @@ impl UserPage {
             .username_min_len
             .set(defaults.user.username_min_len);
         self.imp().pin_min_len.set(defaults.user.pin_min_len);
+        self.imp().storage.replace(defaults.user.storage);
+
+        debug!(
+            "Storage {}, username min len: {}, pin min len: {}",
+            self.imp().storage.get(),
+            self.imp().username_min_len.get(),
+            self.imp().pin_min_len.get()
+        );
 
         self.upcast_ref::<Page>().set_can_go_next(false);
 
@@ -312,7 +321,7 @@ impl UserPage {
             real_name,
             disposition: "regular".into(),
             shell: "/bin/bash".into(),
-            storage: "directory".into(),
+            storage: self.imp().storage.get().to_string(),
             enforce_password_policy: false,
             last_change_u_sec: now,
             last_password_change_u_sec: now,
