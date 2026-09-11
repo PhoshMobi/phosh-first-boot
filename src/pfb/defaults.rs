@@ -5,6 +5,14 @@ use log::warn;
 use serde::Deserialize;
 use std::path::Path;
 
+#[derive(Debug, Default, Deserialize, Clone, Copy)]
+#[serde(rename_all = "lowercase")]
+pub enum Storage {
+    #[default]
+    Luks,
+    Directory,
+}
+
 #[derive(Debug, Deserialize, Default)]
 pub struct Defaults {
     pub user: UserDefaults,
@@ -14,6 +22,22 @@ pub struct Defaults {
 pub struct UserDefaults {
     // Auxiliary groups we add the user to
     pub aux_groups: Vec<String>,
+    // Minimum username length
+    #[serde(default = "default_username_min_len")]
+    pub username_min_len: usize,
+    // Minimum pin/password length
+    #[serde(default = "default_pin_min_len")]
+    pub pin_min_len: usize,
+    // homed storage backend
+    pub storage: Storage,
+}
+
+const fn default_username_min_len() -> usize {
+    2
+}
+
+const fn default_pin_min_len() -> usize {
+    4
 }
 
 impl Defaults {
@@ -36,5 +60,16 @@ impl Defaults {
             );
             Self::default()
         })
+    }
+}
+
+impl std::fmt::Display for Storage {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let value = match self {
+            Storage::Luks => "luks",
+            Storage::Directory => "directory",
+        };
+
+        f.write_str(value)
     }
 }

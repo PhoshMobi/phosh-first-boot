@@ -3,7 +3,7 @@
 
 use glib::Object;
 
-use crate::pfb::{application, crypt, Page, PageImpl};
+use crate::pfb::{application, crypt, defaults::Storage, Page, PageImpl};
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use glib::MainContext;
@@ -15,9 +15,6 @@ use serde::Serialize;
 use zbus::{proxy, Connection};
 
 use log::{debug, trace, warn};
-
-const PIN_MIN_LEN: usize = 4;
-const USERNAME_MIN_LEN: usize = 3;
 
 #[proxy(
     interface = "org.freedesktop.home1.Manager",
@@ -89,6 +86,9 @@ mod imp {
 
         // Username derived from full name
         pub auto_user_name: Cell<bool>,
+        pub username_min_len: Cell<usize>,
+        pub pin_min_len: Cell<usize>,
+        pub storage: Cell<Storage>,
 
         pub(super) connection: RefCell<Option<Connection>>,
         pub(super) home1: RefCell<Option<HomeManagerProxy<'static>>>,
@@ -138,7 +138,23 @@ impl UserPage {
     }
 
     fn setup(&self) {
+        let app = application::app_get_default();
+        let defaults = app.defaults();
+
         self.imp().auto_user_name.set(true);
+        self.imp()
+            .username_min_len
+            .set(defaults.user.username_min_len);
+        self.imp().pin_min_len.set(defaults.user.pin_min_len);
+        self.imp().storage.replace(defaults.user.storage);
+
+        debug!(
+            "Storage {}, username min len: {}, pin min len: {}",
+            self.imp().storage.get(),
+            self.imp().username_min_len.get(),
+            self.imp().pin_min_len.get()
+        );
+
         self.upcast_ref::<Page>().set_can_go_next(false);
 
         MainContext::default().spawn_local(glib::clone!(
@@ -157,7 +173,8 @@ impl UserPage {
     }
 
     fn is_valid_username(&self, s: &str) -> bool {
-        s.len() >= USERNAME_MIN_LEN && s.chars().all(|c| self.is_allowed_username_char(c))
+        s.len() >= self.imp().username_min_len.get()
+            && s.chars().all(|c| self.is_allowed_username_char(c))
     }
 
     fn sanitize_username(&self, full_name: &str) -> String {
@@ -239,7 +256,10 @@ impl UserPage {
             return false;
         }
 
-        if user_name.len() >= USERNAME_MIN_LEN && pin1.len() >= PIN_MIN_LEN && pin1 == pin2 {
+        if user_name.len() >= self.imp().username_min_len.get()
+            && pin1.len() >= self.imp().pin_min_len.get()
+            && pin1 == pin2
+        {
             return self.is_valid_username(&user_name);
         }
 
@@ -301,7 +321,7 @@ impl UserPage {
             real_name,
             disposition: "regular".into(),
             shell: "/bin/bash".into(),
-            storage: "directory".into(),
+            storage: self.imp().storage.get().to_string(),
             enforce_password_policy: false,
             last_change_u_sec: now,
             last_password_change_u_sec: now,
