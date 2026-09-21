@@ -1,7 +1,7 @@
 [Desktop Entry]
 # Translators: This is the application name
 Name=Phosh First-Boot
-Exec=@LIBEXECDIR@/phosh-first-boot
+Exec=@BINDIR@/phosh-first-boot
 # Translators: Don't translate, it's an icon file name
 Icon=@APP_ID@
 Terminal=false
