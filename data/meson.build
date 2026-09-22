@@ -80,7 +80,7 @@ configure_file(
 
 desktop_file = f'@app_id@.desktop'
 desktop_file_data = configuration_data()
-desktop_file_data.set('LIBEXECDIR', libexecdir)
+desktop_file_data.set('BINDIR', bindir)
 desktop_file_data.set('APP_ID', app_id)
 merged = i18n.merge_file(
   input: configure_file(
