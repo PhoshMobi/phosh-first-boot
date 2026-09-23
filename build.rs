@@ -8,7 +8,12 @@ fn main() {
         "mobi.phosh.FirstBoot.gresource",
     );
 
-    if env::var("DEB_HOST_ARCH").is_err() {
+    // Keep Meson build in sync unless PFB_SKIP_MESON=1
+    // This is a convenience for local development, distro packaging SHOULD
+    // set PFB_SKIP_MESON=1.
+    println!("cargo:rerun-if-env-changed=PFB_SKIP_MESON");
+    let meson_preconfigured = env::var("PFB_SKIP_MESON").is_ok_and(|value| value == "1");
+    if !meson_preconfigured {
         let meson_dir = format!("{}/_build/", env::var("OUT_DIR").unwrap());
         Command::new("meson")
             .args(["setup", "--reconfigure", &meson_dir])
