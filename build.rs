@@ -14,6 +14,11 @@ fn main() {
     println!("cargo:rerun-if-env-changed=PFB_SKIP_MESON");
     let meson_preconfigured = env::var("PFB_SKIP_MESON").is_ok_and(|value| value.trim() == "1");
     if !meson_preconfigured {
+        println!("cargo:warning=Invoking pfb's meson");
+        if env::var("DEB_HOST_ARCH").is_ok() {
+            panic!("** Refusing to run internal meson in deb build **");
+        }
+
         let meson_dir = format!("{}/_build/", env::var("OUT_DIR").unwrap());
         Command::new("meson")
             .args(["setup", "--reconfigure", &meson_dir])
