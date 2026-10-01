@@ -27,6 +27,24 @@ trait HomeManager {
     async fn create_home(&self, user_record: &str) -> zbus::Result<()>;
 }
 
+#[proxy(
+    interface = "org.freedesktop.Accounts.User",
+    default_service = "org.freedesktop.Accounts"
+)]
+trait User {
+    // No properties required, as for now we only check for existence of the user.
+}
+
+#[proxy(
+    interface = "org.freedesktop.Accounts",
+    default_service = "org.freedesktop.Accounts",
+    default_path = "/org/freedesktop/Accounts"
+)]
+trait Accounts {
+    #[zbus(object = "User")]
+    async fn find_user_by_name(&self, name: &str) -> zbus::Result<UserProxy<'_>>;
+}
+
 #[derive(Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 struct SecretSection {
@@ -92,6 +110,7 @@ mod imp {
 
         pub(super) connection: RefCell<Option<Connection>>,
         pub(super) home1: RefCell<Option<HomeManagerProxy<'static>>>,
+        pub(super) accounts: RefCell<Option<AccountsProxy<'static>>>,
     }
 
     #[glib::object_subclass]
@@ -164,6 +183,9 @@ impl UserPage {
                 if let Err(e) = this.ensure_home1().await {
                     warn!("Failed to init home1 proxy: {e}");
                 }
+                if let Err(e) = this.ensure_accounts().await {
+                    warn!("Failed to init accounts proxy: {e}");
+                }
             }
         ));
     }
@@ -193,7 +215,8 @@ impl UserPage {
             name = full_name;
         }
 
-        name.chars()
+        let username: String = name
+            .chars()
             .filter_map(|c| {
                 if self.is_allowed_username_char(c) {
                     Some(c.to_ascii_lowercase())
@@ -201,9 +224,30 @@ impl UserPage {
                     None
                 }
             })
-            .collect()
+            .collect();
 
-        // TODO: check if username already exists
+        self.imp().error_banner.set_revealed(false);
+        self.set_active(true);
+
+        let owned_username = username.to_owned();
+        MainContext::default().spawn_local(glib::clone!(
+            #[weak(rename_to = this)]
+            self,
+            async move {
+                let user_exists = this.find_user_by_name(owned_username.clone()).await.is_ok();
+                if user_exists {
+                    let imp = this.imp();
+
+                    imp.error_banner
+                        .set_title(&gettextrs::gettext("Username already exists"));
+                    imp.error_banner.set_revealed(true);
+                    warn!("Username invalid: Username '{owned_username}' already exists");
+                }
+                this.set_active(false);
+            }
+        ));
+
+        username
     }
 
     #[template_callback]
@@ -214,7 +258,7 @@ impl UserPage {
             return;
         }
 
-        let username = self.sanitize_username(&imp.full_name_entry_row.text());
+        let username = imp.full_name_entry_row.text();
         if username.is_empty() {
             return;
         }
@@ -227,8 +271,7 @@ impl UserPage {
         let imp = self.imp();
 
         // Username empty, always switch back to automatic
-        let username = imp.user_name_entry_row.text();
-
+        let username = self.sanitize_username(&imp.user_name_entry_row.text());
         if username.is_empty() {
             trace!("Re-enabling auto-username");
             imp.auto_user_name.set(true);
@@ -285,6 +328,32 @@ impl UserPage {
         self.imp().home1.replace(Some(proxy));
 
         Ok(())
+    }
+
+    async fn ensure_accounts(&self) -> zbus::Result<()> {
+        if self.imp().accounts.borrow().is_some() {
+            return Ok(());
+        }
+
+        if self.imp().connection.borrow().is_none() {
+            trace!("Connecting to system bus");
+            let conn = Connection::system().await?;
+            self.imp().connection.replace(Some(conn));
+        }
+
+        // We clone to not hold the `RefCell` ref across the `await` point
+        let conn = self.imp().connection.borrow().as_ref().unwrap().clone();
+        trace!("Creating accounts proxy");
+        let proxy = AccountsProxy::new(&conn).await?;
+
+        self.imp().accounts.replace(Some(proxy));
+
+        Ok(())
+    }
+
+    async fn find_user_by_name(&self, name: String) -> zbus::Result<UserProxy<'static>> {
+        let proxy = self.imp().accounts.borrow().as_ref().unwrap().clone();
+        proxy.find_user_by_name(name.as_str()).await
     }
 
     async fn create_homed_user(
