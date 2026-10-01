@@ -159,19 +159,18 @@ impl UserPage {
     fn setup(&self) {
         let app = application::app_get_default();
         let defaults = app.defaults();
+        let imp = self.imp();
 
-        self.imp().auto_user_name.set(true);
-        self.imp()
-            .username_min_len
-            .set(defaults.user.username_min_len);
-        self.imp().pin_min_len.set(defaults.user.pin_min_len);
-        self.imp().storage.replace(defaults.user.storage);
+        imp.auto_user_name.set(true);
+        imp.username_min_len.set(defaults.user.username_min_len);
+        imp.pin_min_len.set(defaults.user.pin_min_len);
+        imp.storage.replace(defaults.user.storage);
 
         debug!(
             "Storage {}, username min len: {}, pin min len: {}",
-            self.imp().storage.get(),
-            self.imp().username_min_len.get(),
-            self.imp().pin_min_len.get()
+            imp.storage.get(),
+            imp.username_min_len.get(),
+            imp.pin_min_len.get()
         );
 
         self.upcast_ref::<Page>().set_can_go_next(false);
@@ -299,8 +298,9 @@ impl UserPage {
             return false;
         }
 
-        if user_name.len() >= self.imp().username_min_len.get()
-            && pin1.len() >= self.imp().pin_min_len.get()
+        let imp = self.imp();
+        if user_name.len() >= imp.username_min_len.get()
+            && pin1.len() >= imp.pin_min_len.get()
             && pin1 == pin2
         {
             return self.is_valid_username(&user_name);
@@ -310,43 +310,47 @@ impl UserPage {
     }
 
     async fn ensure_home1(&self) -> zbus::Result<()> {
-        if self.imp().home1.borrow().is_some() {
+        let imp = self.imp();
+
+        if imp.home1.borrow().is_some() {
             return Ok(());
         }
 
-        if self.imp().connection.borrow().is_none() {
+        if imp.connection.borrow().is_none() {
             trace!("Connecting to system bus");
             let conn = Connection::system().await?;
-            self.imp().connection.replace(Some(conn));
+            imp.connection.replace(Some(conn));
         }
 
         // We clone to not hold the `RefCell` ref across the `await` point
-        let conn = self.imp().connection.borrow().as_ref().unwrap().clone();
+        let conn = imp.connection.borrow().as_ref().unwrap().clone();
         trace!("Creating home1 proxy");
         let proxy = HomeManagerProxy::new(&conn).await?;
 
-        self.imp().home1.replace(Some(proxy));
+        imp.home1.replace(Some(proxy));
 
         Ok(())
     }
 
     async fn ensure_accounts(&self) -> zbus::Result<()> {
-        if self.imp().accounts.borrow().is_some() {
+        let imp = self.imp();
+
+        if imp.accounts.borrow().is_some() {
             return Ok(());
         }
 
-        if self.imp().connection.borrow().is_none() {
+        if imp.connection.borrow().is_none() {
             trace!("Connecting to system bus");
             let conn = Connection::system().await?;
-            self.imp().connection.replace(Some(conn));
+            imp.connection.replace(Some(conn));
         }
 
         // We clone to not hold the `RefCell` ref across the `await` point
-        let conn = self.imp().connection.borrow().as_ref().unwrap().clone();
+        let conn = imp.connection.borrow().as_ref().unwrap().clone();
         trace!("Creating accounts proxy");
         let proxy = AccountsProxy::new(&conn).await?;
 
-        self.imp().accounts.replace(Some(proxy));
+        imp.accounts.replace(Some(proxy));
 
         Ok(())
     }
@@ -376,6 +380,7 @@ impl UserPage {
         //       "hashedPassword": ["$y$j9T$CbejJNQCo5/LHB1rgL6FV0$zddBhz9ayMcWNj0EOgUcBXKhvIj6gEFBw0e51zFwyz2"]
         //   }
         // }
+        let imp = self.imp();
 
         let now = if let Ok(now) = SystemTime::now().duration_since(UNIX_EPOCH) {
             now.as_micros()
@@ -390,7 +395,7 @@ impl UserPage {
             real_name,
             disposition: "regular".into(),
             shell: "/bin/bash".into(),
-            storage: self.imp().storage.get().to_string(),
+            storage: imp.storage.get().to_string(),
             enforce_password_policy: false,
             last_change_u_sec: now,
             last_password_change_u_sec: now,
@@ -405,7 +410,7 @@ impl UserPage {
 
         let json_record = serde_json::to_string(&record)?;
 
-        let proxy = self.imp().home1.borrow().as_ref().unwrap().clone();
+        let proxy = imp.home1.borrow().as_ref().unwrap().clone();
         trace!("Creating user '{}'", user_name);
         proxy.create_home(&json_record).await?;
 
