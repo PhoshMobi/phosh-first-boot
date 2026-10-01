@@ -14,7 +14,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use serde::Serialize;
 use zbus::{proxy, Connection};
 
-use log::{debug, trace, warn};
+use log::{debug, error, info, trace, warn};
 
 #[proxy(
     interface = "org.freedesktop.home1.Manager",
@@ -32,7 +32,7 @@ trait HomeManager {
     default_service = "org.freedesktop.Accounts"
 )]
 trait User {
-    // No properties required, as for now we only check for existence of the user.
+    async fn set_locked(&self, locked: bool) -> zbus::Result<()>;
 }
 
 #[proxy(
@@ -41,6 +41,9 @@ trait User {
     default_path = "/org/freedesktop/Accounts"
 )]
 trait Accounts {
+    #[zbus(object = "User")]
+    async fn find_user_by_id(&self, id: i64) -> zbus::Result<UserProxy<'_>>;
+
     #[zbus(object = "User")]
     async fn find_user_by_name(&self, name: &str) -> zbus::Result<UserProxy<'_>>;
 }
@@ -107,6 +110,8 @@ mod imp {
         pub username_min_len: Cell<usize>,
         pub pin_min_len: Cell<usize>,
         pub storage: Cell<Storage>,
+        #[property(get, set)]
+        pub lock_root_account: Cell<bool>,
 
         pub(super) connection: RefCell<Option<Connection>>,
         pub(super) home1: RefCell<Option<HomeManagerProxy<'static>>>,
@@ -165,12 +170,14 @@ impl UserPage {
         imp.username_min_len.set(defaults.user.username_min_len);
         imp.pin_min_len.set(defaults.user.pin_min_len);
         imp.storage.replace(defaults.user.storage);
+        imp.lock_root_account.set(defaults.user.lock_root_account);
 
         debug!(
-            "Storage {}, username min len: {}, pin min len: {}",
+            "Storage {}, username min len: {}, pin min len: {}, lock_root_account: {}",
             imp.storage.get(),
             imp.username_min_len.get(),
-            imp.pin_min_len.get()
+            imp.pin_min_len.get(),
+            imp.lock_root_account.get()
         );
 
         self.upcast_ref::<Page>().set_can_go_next(false);
@@ -355,9 +362,19 @@ impl UserPage {
         Ok(())
     }
 
+    async fn find_user_by_id(&self, id: i64) -> zbus::Result<UserProxy<'static>> {
+        let proxy = self.imp().accounts.borrow().as_ref().unwrap().clone();
+        proxy.find_user_by_id(id).await
+    }
+
     async fn find_user_by_name(&self, name: String) -> zbus::Result<UserProxy<'static>> {
         let proxy = self.imp().accounts.borrow().as_ref().unwrap().clone();
         proxy.find_user_by_name(name.as_str()).await
+    }
+
+    async fn lock_user(&self, id: i64) -> zbus::Result<()> {
+        let user = self.find_user_by_id(id).await?;
+        user.set_locked(true).await
     }
 
     async fn create_homed_user(
@@ -441,18 +458,39 @@ impl UserPage {
             #[weak(rename_to = this)]
             self,
             async move {
+                let imp = this.imp();
+
                 match this
                     .create_homed_user(username.clone(), fullname, pin, aux_groups)
                     .await
                 {
                     Ok(_) => {
                         debug!("User {} created.", username);
-                        this.upcast_ref::<Page>().set_can_go_next(true);
-                        this.upcast_ref::<Page>().go_next();
+
+                        let mut can_continue = true;
+                        if imp.lock_root_account.get() {
+                            match this.lock_user(0).await {
+                                Ok(_) => {
+                                    info!("Successfully locked root user");
+                                }
+                                Err(e) => {
+                                    can_continue = false;
+
+                                    imp.error_banner.set_title(&gettextrs::gettext(
+                                        "Failed to disable administrative account",
+                                    ));
+                                    imp.error_banner.set_revealed(true);
+                                    error!("Failed to lock root user: {e}");
+                                }
+                            }
+                        }
+
+                        if can_continue {
+                            this.upcast_ref::<Page>().set_can_go_next(true);
+                            this.upcast_ref::<Page>().go_next();
+                        }
                     }
                     Err(e) => {
-                        let imp = this.imp();
-
                         imp.error_banner
                             .set_title(&gettextrs::gettext("Failed to create user"));
                         imp.error_banner.set_revealed(true);
