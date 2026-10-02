@@ -379,7 +379,8 @@ impl UserPage {
                     Err(e) => {
                         let imp = this.imp();
 
-                        imp.error_banner.set_title("Failed to create user");
+                        imp.error_banner
+                            .set_title(&gettextrs::gettext("Failed to create user"));
                         imp.error_banner.set_revealed(true);
                         warn!("Failed to create user: {e}");
                     }
