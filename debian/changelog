@@ -1,3 +1,42 @@
+phosh-first-boot (0.2.0) unstable; urgency=medium
+
+  [ Guido Günther ]
+  * build: Bump dependencies
+  * panels/user: Allow to set minimum pin and username length
+  * panels/user: Use luks storage backend by default.
+    Can be changed via config
+    Closes: https://gitlab.gnome.org/World/Phosh/phosh-first-boot/-/work_items/3
+  * defaults: Add user to sudo group.
+    While we don't use sudo on e.g. BengalOS it's still useful as
+    /usr/share/polkit-1/rules.d/50-default.rules determines the
+    admin from it.
+    That way `run0` to works without root password and uses the users
+    password.
+  * data: Uncomment storage field. Avoids a warning on startup
+  * build: Trim PFB_SKIP_MESON.
+    The comment in the debian/rules file adds a whitespace to the
+    variable.
+    Fixes: e8548aa ("build: Add opt-out for automatic Meson setup")
+  * build: Deb builds must never invoke meson
+
+  [ Sam Day ]
+  * desktop: Use the installed application binary directory.
+    The application is installed in bindir, including by the Debian
+    packaging, while only the importer belongs in libexecdir. Use bindir in
+    the desktop entry so launching it finds the application.
+    Assisted-by: Codex:gpt-6
+  * build: Add opt-out for automatic Meson setup
+    build.rs runs `meson setup` as a convenience for local development. This
+    interferes with most distro packaging tooling, including Debian and
+    Fedora.
+    Replace the existing Debian-specific detection with a generic
+    PFB_SKIP_MESON=1 env var that can be used from packaging contexts.
+
+  [ Alexander Martinz ]
+  * panels/user: Allow translation of ui visible text
+
+ -- Guido Günther <agx@sigxcpu.org>  Fri, 02 Oct 2026 16:38:34 +0200
+
 phosh-first-boot (0.1.1) unstable; urgency=medium
 
   * build: Bump version

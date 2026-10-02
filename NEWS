@@ -1,3 +1,19 @@
+phosh-first-boot 0.2.0
+----------------------
+Released October 2026
+* user panel:
+  * Allow to configure minimum password and username length
+  * Add user to sudo group by default
+  * Use homed's LUKS backend by default
+  * Mark more strings as translatable
+* Various fixes to build on Fedora too
+* Issues fixed:
+    * https://gitlab.gnome.org/World/Phosh/phosh-first-boot/-/work_items/3
+* Contributors:
+    * Alexander Martinz
+    * Guido Günther
+    * Sam Day
+
 phosh-first-boot 0.1.1
 ----------------------
 Released August 2026
