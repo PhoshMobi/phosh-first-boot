@@ -29,7 +29,7 @@ fn main() {
             .status()
             .unwrap();
 
-        let src = format!("{}/data/gschemas.compiled", &meson_dir);
+        let src = format!("{}/data/gschemas.compiled", meson_dir);
         // Would be nicer to have it in target/<profile> but .cargo/toml can't have variables
         // in env vars
         let dst = format!(
