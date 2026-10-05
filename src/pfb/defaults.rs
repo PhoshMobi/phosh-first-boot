@@ -18,9 +18,10 @@ pub struct Defaults {
     pub user: UserDefaults,
 }
 
-#[derive(Debug, Deserialize, Default)]
+#[derive(Debug, Deserialize)]
 pub struct UserDefaults {
     // Auxiliary groups we add the user to
+    #[serde(default = "default_aux_groups")]
     pub aux_groups: Vec<String>,
     // Minimum username length
     #[serde(default = "default_username_min_len")]
@@ -29,7 +30,23 @@ pub struct UserDefaults {
     #[serde(default = "default_pin_min_len")]
     pub pin_min_len: usize,
     // homed storage backend
+    #[serde(default = "default_storage")]
     pub storage: Storage,
+}
+
+impl Default for UserDefaults {
+    fn default() -> Self {
+        UserDefaults {
+            aux_groups: default_aux_groups(),
+            username_min_len: default_username_min_len(),
+            pin_min_len: default_pin_min_len(),
+            storage: default_storage(),
+        }
+    }
+}
+
+const fn default_aux_groups() -> Vec<String> {
+    vec![]
 }
 
 const fn default_username_min_len() -> usize {
@@ -38,6 +55,10 @@ const fn default_username_min_len() -> usize {
 
 const fn default_pin_min_len() -> usize {
     4
+}
+
+const fn default_storage() -> Storage {
+    Storage::Luks
 }
 
 impl Defaults {
