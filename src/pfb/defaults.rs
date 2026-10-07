@@ -32,6 +32,9 @@ pub struct UserDefaults {
     // homed storage backend
     #[serde(default = "default_storage")]
     pub storage: Storage,
+    // Lock root account after creating user
+    #[serde(default = "default_lock_root_account")]
+    pub lock_root_account: bool,
 }
 
 impl Default for UserDefaults {
@@ -41,6 +44,7 @@ impl Default for UserDefaults {
             username_min_len: default_username_min_len(),
             pin_min_len: default_pin_min_len(),
             storage: default_storage(),
+            lock_root_account: default_lock_root_account(),
         }
     }
 }
@@ -59,6 +63,10 @@ const fn default_pin_min_len() -> usize {
 
 const fn default_storage() -> Storage {
     Storage::Luks
+}
+
+const fn default_lock_root_account() -> bool {
+    true
 }
 
 impl Defaults {
