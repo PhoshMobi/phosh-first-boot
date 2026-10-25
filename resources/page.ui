@@ -29,6 +29,7 @@
                   <object class="GtkButton">
                     <property name="label" bind-source="PfbPage" bind-property="next-label" bind-flags="sync-create"/>
                     <property name="action-name">navigation.push</property>
+                    <property name="use-underline">1</property>
                     <binding name="action-target">
                       <closure type="GVariant" function="string_to_variant">
                         <lookup name="next">PfbPage</lookup>

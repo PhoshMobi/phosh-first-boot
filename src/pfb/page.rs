@@ -81,7 +81,7 @@ impl Page {
 
     fn setup(&self) {
         // Translators: The label on the button to go to the next page
-        self.set_next_label(gettextrs::gettext("Next"));
+        self.set_next_label(gettextrs::gettext("_Next"));
     }
 
     #[template_callback]
