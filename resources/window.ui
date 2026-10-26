@@ -10,7 +10,7 @@
           <object class="PfbPage" id="start_page">
             <property name="title" translatable="yes">Welcome</property>
             <property name="can-go-next">1</property>
-            <property name="next-label" translatable="yes">Let's go</property>
+            <property name="next-label" translatable="yes">_Let's go</property>
             <property name="next">lang</property>
             <property name="content">
               <object class="AdwStatusPage">
