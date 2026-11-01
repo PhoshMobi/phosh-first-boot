@@ -9,7 +9,7 @@ Build-Depends:
  libadwaita-1-dev,
  libcrypt-dev,
  libglib2.0-bin,
- libgtk-4-dev,
+ libgtk-4-dev (>= 4.22),
  libpms-dev,
  libxml2-utils,
  meson,
