@@ -30,7 +30,14 @@
         </child>
         <child>
           <object class="PfbUserPage" id="user_page">
+            <property name="next">hostname</property>
+          </object>
+        </child>
+        <child>
+          <object class="PfbHostnamePage" id="hostname_page">
             <property name="next">all-done</property>
+            <property name="full-name" bind-source="user_page" bind-property="full-name" bind-flags="sync-create"/>
+            <property name="user-name" bind-source="user_page" bind-property="user-name" bind-flags="sync-create"/>
           </object>
         </child>
         <child>

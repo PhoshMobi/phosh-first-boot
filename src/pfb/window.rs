@@ -10,7 +10,7 @@ use gtk::{gio, glib};
 use log::trace;
 
 use crate::pfb::{Application, Page};
-use crate::pfb::{DonePage, LangPage, UserPage};
+use crate::pfb::{DonePage, HostnamePage, LangPage, UserPage};
 
 mod imp {
 
@@ -34,6 +34,9 @@ mod imp {
 
         #[template_child]
         pub user_page: TemplateChild<UserPage>,
+
+        #[template_child]
+        pub hostname_page: TemplateChild<HostnamePage>,
 
         #[template_child]
         pub done_page: TemplateChild<DonePage>,
