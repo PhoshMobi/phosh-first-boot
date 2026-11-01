@@ -6,6 +6,7 @@ pub mod config;
 pub mod crypt;
 pub mod defaults;
 pub mod page;
+pub mod utils;
 pub mod window;
 
 pub use application::{app_get_default, Application};

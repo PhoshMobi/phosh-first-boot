@@ -3,7 +3,7 @@
 
 use glib::Object;
 
-use crate::pfb::{Page, PageImpl};
+use crate::pfb::{utils, Page, PageImpl};
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use glib::MainContext;
@@ -328,12 +328,12 @@ impl HostnamePage {
         let hostname = pretty_to_static(imp.name_entry_row.text().trim());
 
         if is_valid_hostname(&hostname) {
-            imp.name_entry_row.remove_css_class("error");
+            utils::widget_set_valid(imp.name_entry_row.upcast_ref(), true);
             // Translators: The {} is replaced by the hostname derived from the device name
             let description = gettextrs::gettext("Hostname: {}").replace("{}", &hostname);
             imp.name_group.set_description(Some(&description));
         } else {
-            imp.name_entry_row.add_css_class("error");
+            utils::widget_set_valid(imp.name_entry_row.upcast_ref(), false);
             imp.name_group.set_description(None);
         }
     }

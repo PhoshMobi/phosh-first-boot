@@ -44,8 +44,8 @@
                         </child>
                         <child type="center">
                           <object class="GtkLabel">
-                            <!-- Translators: The label on the button to go to the next page -->
-                            <property name="label" translatable="yes">Next</property>
+                            <property name="use-underline">true</property>
+                            <property name="label" translatable="yes">_Set Name</property>
                           </object>
                         </child>
                       </object>
