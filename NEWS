@@ -1,3 +1,17 @@
+phosh-first-boot 0.3.0
+----------------------
+Released November 2026
+* New panel for setting the hostname
+* user panel:
+    * Add duplicate user check
+    * Lock root account
+* Issues fixed:
+    * https://gitlab.gnome.org/World/Phosh/phosh-first-boot/-/work_items/7
+    * https://gitlab.gnome.org/World/Phosh/phosh-first-boot/-/work_items/8
+* Contributors:
+    * Alexander Martinz
+    * Guido Günther
+
 phosh-first-boot 0.2.0
 ----------------------
 Released October 2026
