@@ -1,3 +1,43 @@
+phosh-first-boot (0.3.0) unstable; urgency=medium
+
+  [ Alexander Martinz ]
+  * panels/user: Check if user already exists.
+    When sanitizing the username field also check if the username
+    already exists.
+    Also move the sanitize check from the fullname to the username
+    instead.
+  * panels/user: Remove repeated self.imp() calls
+  * build: Fix clippy warning.
+    Arguments within `format!` do not need to be borrowed.
+  * defaults: Properly provide default values.
+    The current default implementation only provided default values
+    when serde actually parsed something but the fields were missing.
+    If the config file does not exist at all, different default values
+    were provided.
+    Implement the `Default` trait explicitly to provide the same serde
+    defaults.
+    Also implement serde defaults for aux groups and storage.
+  * panels/user: Lock root user after user creation.
+    A new config option was added to toggle whether the root account
+    should be locked after account creation (true by default).
+    Fixes: https://gitlab.gnome.org/World/Phosh/phosh-first-boot/-/work_items/7
+
+  [ Guido Günther ]
+  * page: Use underline.
+    This allows for easier keyboard navigation
+  * build: Bump GTK dependency.
+    We want to use GtkSvg
+  * pages/user: Add user-name and full-name properties.
+    This allows them to be used by later pages.
+  * pages/hostname: New page to set hostname.
+    Very similar to what we do for user creation: translit to an ascii hostname, …
+    Icons where taken from org.gnome.design.IconLibrary, some of them tweaked a
+    bit to remove unneeded elements.
+    Closes: https://gitlab.gnome.org/World/Phosh/phosh-first-boot/-/work_items/8
+  * ci: Run tests
+
+ -- Guido Günther <agx@sigxcpu.org>  Sun, 08 Nov 2026 17:15:02 +0100
+
 phosh-first-boot (0.2.0) unstable; urgency=medium
 
   [ Guido Günther ]
