@@ -105,6 +105,12 @@ mod imp {
         #[property(get, set)]
         pub active: Cell<bool>,
 
+        // Mirror the entries so other pages can use them
+        #[property(get, set)]
+        pub full_name: RefCell<String>,
+        #[property(get, set)]
+        pub user_name: RefCell<String>,
+
         // Username derived from full name
         pub auto_user_name: Cell<bool>,
         pub username_min_len: Cell<usize>,
@@ -179,6 +185,15 @@ impl UserPage {
             imp.pin_min_len.get(),
             imp.lock_root_account.get()
         );
+
+        imp.full_name_entry_row
+            .bind_property("text", self, "full-name")
+            .sync_create()
+            .build();
+        imp.user_name_entry_row
+            .bind_property("text", self, "user-name")
+            .sync_create()
+            .build();
 
         self.upcast_ref::<Page>().set_can_go_next(false);
 

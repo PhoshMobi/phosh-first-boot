@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="PfbHostnamePage" parent="PfbPage">
+    <property name="title" translatable="yes">Device Name</property>
+    <property name="tag">hostname</property>
+    <signal name="showing" handler="on_showing" swapped="true"/>
+    <property name="content">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <child>
+          <object class="AdwBanner" id="error_banner"/>
+        </child>
+        <child>
+          <object class="AdwStatusPage" id="status_page">
+            <property name="title" translatable="yes">Name Your Device</property>
+            <property name="description" translatable="yes">This is how your device shows up on the network</property>
+            <property name="child">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="spacing">24</property>
+                <child>
+                  <object class="AdwPreferencesGroup" id="name_group">
+                    <child>
+                      <object class="AdwEntryRow" id="name_entry_row">
+                        <property name="title" translatable="yes">Device Name</property>
+                        <signal name="notify::text" handler="on_name_entry_row_text_changed" swapped="true"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="child">
+                      <object class="GtkCenterBox">
+                        <child type="start">
+                          <object class="AdwSpinner">
+                            <property name="visible" bind-source="PfbHostnamePage" bind-property="active" bind-flags="sync-create"/>
+                            <property name="hexpand">1</property>
+                            <property name="halign">end</property>
+                            <property name="margin-end">12</property>
+                          </object>
+                        </child>
+                        <child type="center">
+                          <object class="GtkLabel">
+                            <property name="use-underline">true</property>
+                            <property name="label" translatable="yes">_Set Name</property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                    <binding name="sensitive">
+                      <closure type="gboolean" function="state_to_ready">
+                        <lookup name="text">name_entry_row</lookup>
+                        <lookup name="active">PfbHostnamePage</lookup>
+                      </closure>
+                    </binding>
+                    <signal name="clicked" handler="on_next_clicked" swapped="true"/>
+                    <style>
+                      <class name="suggested-action"/>
+                      <class name="pill"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

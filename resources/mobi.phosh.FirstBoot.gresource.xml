@@ -3,9 +3,18 @@
   <gresource prefix="/mobi/phosh/FirstBoot/">
     <file compressed="true" preprocess="xml-stripblanks">page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">window.ui</file>
+    <file compressed="true">chassis/desktop.svg</file>
+    <file compressed="true">chassis/generic.svg</file>
+    <file compressed="true">chassis/handset.svg</file>
+    <file compressed="true">chassis/laptop.svg</file>
+    <file compressed="true">chassis/server.svg</file>
+    <file compressed="true">chassis/tablet.svg</file>
+    <file compressed="true">chassis/vm.svg</file>
+    <file compressed="true">chassis/watch.svg</file>
   </gresource>
   <gresource prefix="/mobi/phosh/FirstBoot/pages/">
     <file compressed="true" preprocess="xml-stripblanks">done_page.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">hostname_page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">lang_page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">user_page.ui</file>
   </gresource>
